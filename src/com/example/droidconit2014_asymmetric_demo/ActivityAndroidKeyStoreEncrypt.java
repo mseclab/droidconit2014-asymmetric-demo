@@ -53,7 +53,7 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_genkeykeystorecifradecifra);
+		setContentView(R.layout.activity_androidkeystoreencrypt);
 		
 		
 		if (savedInstanceState == null) {
@@ -107,7 +107,7 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_genkeykeystorecifradecifra, container,
+			View rootView = inflater.inflate(R.layout.fragment_androidkeystoreencrypt, container,
 					false);
 
 			// Bottoni
