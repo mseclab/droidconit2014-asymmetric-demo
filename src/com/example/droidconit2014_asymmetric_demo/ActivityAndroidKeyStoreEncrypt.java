@@ -158,6 +158,7 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 		private KeyStore.Entry entry = null;
 
 		private void cifraData() {
+			
 			// TODO Auto-generated method stub
 			String data = mInData.getText().toString();
 			debug("Stringa da cifrare:" + data);
@@ -170,6 +171,7 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 				keyStore = initKeyStore();
 				if (keyStore == null)
 					return;
+				
 				entry = (KeyStore.PrivateKeyEntry) dammiElementoDalKeystore();
 				if (entry == null)
 					return;
@@ -224,6 +226,7 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 		}
 
 		private void decifraData() {
+			
 			// TODO Auto-generated method stub
 			KeyStore.PrivateKeyEntry entry = null;
 
@@ -393,7 +396,8 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 		}
 
 		private void debug(String message) {
-			mDebugText.append(message + "\n");
+			String old  = mDebugText.getText().toString();
+			mDebugText.setText(message + "\n" + old);
 			Log.v(TAG, message);
 		}
 	}

@@ -53,7 +53,8 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 		setContentView(R.layout.activity_androidkeystoresign);
 
 		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
+			getFragmentManager().beginTransaction()
+					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 	}
 
@@ -80,7 +81,8 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+	public static class PlaceholderFragment extends Fragment implements
+			View.OnClickListener {
 
 		private Button mGenChiaviButton;
 		private Button mFirmaButton;
@@ -99,17 +101,21 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 		}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_androidkeystoresign, container, false);
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(
+					R.layout.fragment_androidkeystoresign, container, false);
 
 			// Bottoni
 			exit_Button = (Button) rootView.findViewById(R.id.exit_button);
 			exit_Button.setOnClickListener(this);
-			mGenChiaviButton = (Button) rootView.findViewById(R.id.generate_button);
+			mGenChiaviButton = (Button) rootView
+					.findViewById(R.id.generate_button);
 			mGenChiaviButton.setOnClickListener(this);
 			mFirmaButton = (Button) rootView.findViewById(R.id.firma_button);
 			mFirmaButton.setOnClickListener(this);
-			mVerificaButton = (Button) rootView.findViewById(R.id.verifica_button);
+			mVerificaButton = (Button) rootView
+					.findViewById(R.id.verifica_button);
 			mVerificaButton.setOnClickListener(this);
 
 			// Text View
@@ -156,9 +162,11 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 					Calendar notAfter = Calendar.getInstance();
 					notAfter.add(1, Calendar.YEAR);
 
-					android.security.KeyPairGeneratorSpec.Builder builder = new KeyPairGeneratorSpec.Builder(cx);
+					android.security.KeyPairGeneratorSpec.Builder builder = new KeyPairGeneratorSpec.Builder(
+							cx);
 					builder.setAlias(ALIAS);
-					String infocert = String.format("CN=%s, OU=%s", ALIAS, cx.getPackageName());
+					String infocert = String.format("CN=%s, OU=%s", ALIAS,
+							cx.getPackageName());
 					builder.setSubject(new X500Principal(infocert));
 					builder.setSerialNumber(BigInteger.ONE);
 					builder.setStartDate(notBefore.getTime());
@@ -168,15 +176,18 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 					KeyPairGenerator kpGenerator;
 					KeyPair kp = null;
 					try {
-						kpGenerator = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
+						kpGenerator = KeyPairGenerator.getInstance("RSA",
+								"AndroidKeyStore");
 						kpGenerator.initialize(spec);
 						kp = kpGenerator.generateKeyPair();
 
 						publishProgress("Generated key pair : " + kp.toString());
 						PublicKey publickey = kp.getPublic();
 						PrivateKey privateKey = kp.getPrivate();
-						publishProgress("Formato della chiave pubblica : " + publickey.getFormat());
-						publishProgress("Algoritmo utilizzato : " + publickey.getAlgorithm());
+						publishProgress("Formato della chiave pubblica : "
+								+ publickey.getFormat());
+						publishProgress("Algoritmo utilizzato : "
+								+ publickey.getAlgorithm());
 						if (privateKey.getEncoded() == null)
 							publishProgress("Non possibile accedere direttamente alla chiave privata :-(");
 
@@ -203,7 +214,8 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 
 				@Override
 				protected void onPreExecute() {
-					progressdialog = ProgressDialog.show(getActivity(), "Please wait...", "Generating keys...");
+					progressdialog = ProgressDialog.show(getActivity(),
+							"Please wait...", "Generating keys...");
 				}
 
 			}.execute();
@@ -211,6 +223,7 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 		}
 
 		private void firmaData() {
+			
 			String data = mInData.getText().toString();
 			debug("Stringa da firmare:" + data);
 			byte[] rawData = data.getBytes();
@@ -223,8 +236,10 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 			KeyStore.PrivateKeyEntry keyEntry;
 			byte[] signature = null;
 			try {
-				keyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS, null);
-				RSAPrivateKey privKey = (RSAPrivateKey) keyEntry.getPrivateKey();
+				keyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS,
+						null);
+				RSAPrivateKey privKey = (RSAPrivateKey) keyEntry
+						.getPrivateKey();
 
 				// Calcola firma
 				Signature s = Signature.getInstance(SIGN_ALG);
@@ -245,7 +260,8 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 
 			// OK!
 			if (signature != null) {
-				String signData = Base64.encodeToString(signature, Base64.DEFAULT);
+				String signData = Base64.encodeToString(signature,
+						Base64.DEFAULT);
 				mOutData.setText(signData);
 				debug("Firma Calcolata:\n" + signData);
 			}
@@ -271,7 +287,8 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 			KeyStore.PrivateKeyEntry keyEntry;
 			boolean isSignValid = false;
 			try {
-				keyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS, null);
+				keyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS,
+						null);
 				Certificate cert = keyEntry.getCertificate();
 
 				// Verifica firma
@@ -291,12 +308,14 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 				debug(e.toString());
 			}
 
-			if (isSignValid){
+			if (isSignValid) {
 				debug("Firma Valida");
-				Toast.makeText(getActivity(), "Firma Valida", Toast.LENGTH_LONG).show();	
-			}else{
+				Toast.makeText(getActivity(), "Firma Valida", Toast.LENGTH_LONG)
+						.show();
+			} else {
 				debug("Firma Errata!");
-				Toast.makeText(getActivity(), "Firma Errata", Toast.LENGTH_LONG).show();	
+				Toast.makeText(getActivity(), "Firma Errata", Toast.LENGTH_LONG)
+						.show();
 			}
 		}
 
@@ -319,9 +338,11 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 		}
 
 		private void debug(String message) {
-			mDebugText.append(message + "\n");
+			String old = mDebugText.getText().toString();
+			mDebugText.setText(message + "\n" + old);
 			Log.v(TAG, message);
 		}
+
 	}
 
 }

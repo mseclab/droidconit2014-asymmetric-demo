@@ -131,7 +131,8 @@ public class ActivityAndroidKeyChain extends Activity implements
 
 	@SuppressLint("NewApi")
 	private void debug(String message) {
-		mDebugText.append(message + "\n");
+		String old  = mDebugText.getText().toString();
+		mDebugText.setText(message + "\n" + old);
 		Log.v(TAG, message);
 	}
 

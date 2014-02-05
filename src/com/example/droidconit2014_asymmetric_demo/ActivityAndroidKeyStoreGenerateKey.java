@@ -132,6 +132,10 @@ public class ActivityAndroidKeyStoreGenerateKey extends Activity{
 			// TODO Auto-generated method stub
 			keyStore = initKeyStore();
 			entry = dammiElementoDalKeystore();
+			if(entry==null){
+				debug("Keys not found");
+				return;
+			}
 			debug("Certtificate Type: "
 					+ ((KeyStore.PrivateKeyEntry) entry).getCertificate()
 							.getType());
@@ -253,7 +257,8 @@ public class ActivityAndroidKeyStoreGenerateKey extends Activity{
 		}
 
 		private void debug(String message) {
-			mDebugText.append(message + "\n");
+			String old  = mDebugText.getText().toString();
+			mDebugText.setText(message + "\n" + old);
 			Log.v(TAG, message);
 		}
 	}

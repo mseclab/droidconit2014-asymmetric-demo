@@ -22,8 +22,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import com.example.droidconit2014_asymmetric_demo_step_x1.R;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
@@ -39,6 +37,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.droidconit2014_asymmetric_demo_step_x1.R;
 
 public class ActivityGenerateRSAKey extends Activity {
 
@@ -134,21 +134,21 @@ public class ActivityGenerateRSAKey extends Activity {
 				this.getActivity().finish();
 				break;
 			case R.id.generate_button:
-				debug("Cliccato Genera chiavi");
-				generaChiavi();
+				debug("Click on Gen Keys");
+				genKeys();
 				break;
 			case R.id.view_param_button:
-				debug("Cliccato Visulizza Parametri");
-				visulizzaModulo_EsponentePubblico_EsponentePrivato();
+				debug("Click on View Parameters");
+				view_m_e_d();
 				break;
 
 			case R.id.cifra_button:
-				debug("Cliccato Cifra");
-				cifraData();
+				debug("Click on Encrypt");
+				encrypt();
 				break;
 			case R.id.decifra_button:
-				debug("Cliccato Decifra");
-				decifraData();
+				debug("Click on Dencrypt");
+				decrypt();
 				break;
 
 			}
@@ -161,15 +161,14 @@ public class ActivityGenerateRSAKey extends Activity {
 		BigInteger m = null;
 		BigInteger e = null;
 		BigInteger d = null;
+
+		byte[] encryptedData = null;
+		byte[] decryptedData = null;
+
+		boolean flag = false;
 		
-		byte[] cipheredData = null;
-		byte[] decipheredData = null;
+		private void genKeys() {
 
-		private void generaChiavi() {
-			//clearText();
-
-			showProviders();
-			// Restituisce un generatore di chiavi per RSA
 			KeyPairGenerator kpg = null;
 			try {
 				kpg = KeyPairGenerator.getInstance("RSA");
@@ -177,36 +176,28 @@ public class ActivityGenerateRSAKey extends Activity {
 				e.printStackTrace();
 			}
 
-			debug("Provider utilizzato : " + kpg.getProvider().getName());
+			debug("Used Provider : " + kpg.getProvider().getName());
 
 			SecureRandom sr = null;
-			try {
-				sr = SecureRandom.getInstance("SHA1PRNG");
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// Inizilizza il generatore specificando la lunghezza della chiave
+			sr = new SecureRandom();
+			
 			kpg.initialize(2048, sr);
 
-			// Restiruisce un KeyPair (contiene chiave pubblica/privata)
 			keypair = kpg.genKeyPair();
 
-			// Restituisce la chiave pubblica
 			publicKey = keypair.getPublic();
 
-			// Restituisce la chiave privata
 			privateKey = keypair.getPrivate();
-			
-			
 
-			visulizzaModulo_EsponentePubblico_EsponentePrivato();
+			view_m_e_d();
 
 		}
 
-
-		private void cifraData() {
-
+		private void encrypt() {
+			if (keypair == null){
+				debug("Keys not found!");
+				return;
+			}
 			RSAPublicKeySpec keySpec = new RSAPublicKeySpec(m, e);
 			KeyFactory factory = null;
 			try {
@@ -216,6 +207,7 @@ public class ActivityGenerateRSAKey extends Activity {
 				e1.printStackTrace();
 			}
 			PublicKey pubKey = null;
+			
 			try {
 				pubKey = factory.generatePublic(keySpec);
 			} catch (InvalidKeySpecException e1) {
@@ -226,11 +218,7 @@ public class ActivityGenerateRSAKey extends Activity {
 			Cipher cipher = null;
 			try {
 				cipher = Cipher.getInstance("RSA");
-				
-				//cipher = Cipher.getInstance("RSA/None/OAEPWithSHA-256AndMGF1Padding");
-				//cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-				
-				
+
 			} catch (NoSuchAlgorithmException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -240,15 +228,14 @@ public class ActivityGenerateRSAKey extends Activity {
 			}
 			try {
 				cipher.init(Cipher.ENCRYPT_MODE, pubKey);
-				 //cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			} catch (InvalidKeyException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			debug("Provider Utilizzato -> " +cipher.getProvider());
+			debug("Used Provider : " + cipher.getProvider());
 			String plainText = mInData.getText().toString();
 			try {
-				cipheredData = cipher.doFinal(plainText.getBytes());
+				encryptedData = cipher.doFinal(plainText.getBytes());
 			} catch (IllegalBlockSizeException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -256,14 +243,24 @@ public class ActivityGenerateRSAKey extends Activity {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			String base64_cipheredData = Base64.encodeToString(
-					cipheredData, Base64.DEFAULT);
+
+			String base64_cipheredData = Base64.encodeToString(encryptedData,
+					Base64.DEFAULT);
 			mOutData.setText(base64_cipheredData);
+			flag = true;
 
 		}
 
-		private void decifraData() {
+		private void decrypt() {
+			
+			if (keypair == null){
+				debug("Keys not found!");
+				return;
+			}
+			if(flag==false){
+				debug("Encrypt before");
+				return;
+			}
 			// TODO Auto-generated method stub
 			RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(m, d);
 			KeyFactory keyfactory = null;
@@ -284,9 +281,7 @@ public class ActivityGenerateRSAKey extends Activity {
 
 			Cipher de_cipher = null;
 			try {
-				//de_cipher = Cipher.getInstance("RSA/None/OAEPWithSHA-256AndMGF1Padding");
 				de_cipher = Cipher.getInstance("RSA");
-				//de_cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			} catch (NoSuchAlgorithmException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -300,12 +295,16 @@ public class ActivityGenerateRSAKey extends Activity {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			byte[] base64_cipheredData = mOutData.getText().toString().getBytes();
-			byte[] cipheredData = Base64.decode(base64_cipheredData, Base64.DEFAULT);
-			
+
+			byte[] base64_cipheredData = mOutData.getText().toString()
+					.getBytes();
+				 
+		
+			byte[] cipheredData = Base64.decode(base64_cipheredData,
+					Base64.DEFAULT);
+
 			try {
-				decipheredData = de_cipher.doFinal(cipheredData);
+				decryptedData = de_cipher.doFinal(cipheredData);
 			} catch (IllegalBlockSizeException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -313,38 +312,20 @@ public class ActivityGenerateRSAKey extends Activity {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			String decipheredText = new String(decipheredData);
-			mOutData.setText(decipheredText);
-			debug("Testo decifrato: " + decipheredText);
 
+			String decryptedText = new String(decryptedData);
+			mOutData.setText(decryptedText);
+			debug("Decrypted Text: " + decryptedText);
+
+			flag = false;
 		}
 
-		
-		
-		
-		private void showProviders() {
-			Provider[] providers = Security.getProviders();
-			for (Provider provider : providers) {
-				debug("Provider: " + provider.getName());
-				debug("Version : " + Double.toString(provider.getVersion()));
-				// debug("Info    : " + provider.getInfo());
-				Set<Provider.Service> services = provider.getServices();
-				//if (provider.getName().equalsIgnoreCase("AndroidOpenSSL")) {
-					for (Provider.Service service : services) {
-						//if(service.getAlgorithm().equalsIgnoreCase("RSA"))
-							debug("  algorithm: " + service.getAlgorithm());
-							debug(service.toString());
-
-					}
-				//}
-				debug("\n");
-			}
-		}
-
-		private void visulizzaModulo_EsponentePubblico_EsponentePrivato() {
+		private void view_m_e_d() {
 			clearText();
-			// Manipola le chiavi passando da una rappresentazione all'altra
+			if (keypair == null){
+				debug("Keys not found!");
+				return;
+			}		
 			KeyFactory factory = null;
 			try {
 				factory = KeyFactory.getInstance("RSA");
@@ -369,29 +350,28 @@ public class ActivityGenerateRSAKey extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			// modulo "m" ed esponente "e" pubblico
-			debug("Parametri della chiave pubblica");
-			debug("Modulo pubblico esadecimale: "
+			debug("Public Key Parameters");
+			debug("Hex Public Module: "
 					+ rsa_public_key.getModulus().toString(16));
-			debug("Esponente pubblico esadecimale: "
+			debug("Hex Public Exponent: "
 					+ rsa_public_key.getPublicExponent().toString(16));
-			debug("\n\n\n");
-			// esponente privato d = e elevato alla -1 mod fi(n)=(p-1)(q-1)
-			debug("Parametri della chiave privata");
-			debug("Modulo pubblico esadecimale: "
-					+ rsa_private_key.getModulus().toString(16));
-			debug("Esponente Privato esadecimale: "
+			debug("\n");
+			debug("Private Key Parameters");
+			debug("Hex Private Exponent: "
 					+ rsa_private_key.getPrivateExponent().toString(16));
-
+			debug("Hex Public Module: "
+					+ rsa_private_key.getModulus().toString(16));
+			
 			m = rsa_public_key.getModulus();
 			e = rsa_public_key.getPublicExponent();
 			d = rsa_private_key.getPrivateExponent();
-			
+
 		}
 
 		@SuppressLint("NewApi")
 		private void debug(String message) {
-			mDebugText.append(message + "\n");
+			String old  = mDebugText.getText().toString();
+			mDebugText.setText(message + "\n" + old);
 			Log.v(TAG, message);
 		}
 
