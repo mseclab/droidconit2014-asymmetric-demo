@@ -2,11 +2,11 @@
 <resources>
 
     <string name="app_name">droidconit2014-asymmetric-demo</string>
-    <string name="app_name_GenKeyKeyStoreCifraDecifra">Generate RSA Keys</string>
+    <string name="app_name_AndroidKeyStoreEncrypt">AndroidKeyStore Encrypt/Decrypt</string>
     <string name="app_name_GenerateRSAKey">Generate RSA Key</string>
     <string name="app_name_AndroidKeyChain">KeyChain</string>
     <string name="app_name_AndroidKeyStoreGenerateKey">AndroidKeyStore Gen Keys</string>
-    <string name="app_name_ActivityAndroidKeyStoreSign">AndroidKeyStore Sign/Verify</string>
+    <string name="app_name_AndroidKeyStoreSign">AndroidKeyStore Sign/Verify</string>
     <string name="androidkeystoreencrypt">AndroidKeyStore Enc/Dec</string>
     <string name="view_key_parameter">View m,e,d!</string>
     <string name="hello_world">Hello Droidcon Torino 2014!\n</string>

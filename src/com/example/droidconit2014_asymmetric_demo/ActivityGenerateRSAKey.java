@@ -36,9 +36,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.droidconit2014_asymmetric_demo_step_x1.R;
+
 
 public class ActivityGenerateRSAKey extends Activity {
 
@@ -84,6 +85,7 @@ public class ActivityGenerateRSAKey extends Activity {
 		private Button viewParameterButton;
 		private Button mCifraButton;
 		private Button mDecifraButton;
+		private ScrollView mScrollView;
 		private TextView mDebugText;
 		private EditText mInData;
 		private EditText mOutData;
@@ -122,6 +124,7 @@ public class ActivityGenerateRSAKey extends Activity {
 			mOutData = (EditText) rootView.findViewById(R.id.outDataText);
 			mDebugText = (TextView) rootView.findViewById(R.id.debugText);
 
+			mScrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
 			return rootView;
 		}
 
@@ -350,17 +353,18 @@ public class ActivityGenerateRSAKey extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			debug("Public Key Parameters");
-			debug("Hex Public Module: "
-					+ rsa_public_key.getModulus().toString(16));
-			debug("Hex Public Exponent: "
-					+ rsa_public_key.getPublicExponent().toString(16));
-			debug("\n");
-			debug("Private Key Parameters");
+			debug("----Private Key Parameters----");
 			debug("Hex Private Exponent: "
 					+ rsa_private_key.getPrivateExponent().toString(16));
 			debug("Hex Public Module: "
 					+ rsa_private_key.getModulus().toString(16));
+			debug("-----------------------------");
+			debug("----Public Key Parameters----");
+			debug("Hex Public Module: "
+					+ rsa_public_key.getModulus().toString(16));
+			debug("Hex Public Exponent: "
+					+ rsa_public_key.getPublicExponent().toString(16));
+			debug("----------------------------\n");
 			
 			m = rsa_public_key.getModulus();
 			e = rsa_public_key.getPublicExponent();
@@ -370,13 +374,20 @@ public class ActivityGenerateRSAKey extends Activity {
 
 		@SuppressLint("NewApi")
 		private void debug(String message) {
-			String old  = mDebugText.getText().toString();
-			mDebugText.setText(message + "\n" + old);
+			mDebugText.append(message + "\n");
 			Log.v(TAG, message);
+			mScrollView.post(new Runnable()
+		    {
+		        public void run()
+		        {
+		        	mScrollView.fullScroll(View.FOCUS_DOWN);
+		        }
+		    });
 		}
 
 		private void clearText() {
 			mDebugText.setText("");
+			
 		}
 	}
 

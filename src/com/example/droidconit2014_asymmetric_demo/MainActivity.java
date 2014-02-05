@@ -1,7 +1,5 @@
 package com.example.droidconit2014_asymmetric_demo;
 
-import com.example.droidconit2014_asymmetric_demo_step_x1.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,32 +9,31 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MainActivity extends Activity implements OnClickListener{
-
-	
-	
-
+public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		Button GenKeyKeyStoreCifraDecifra = (Button) this.findViewById(R.id.androidkeystoreencrypt);
+
+		Button GenKeyKeyStoreCifraDecifra = (Button) this
+				.findViewById(R.id.androidkeystoreencrypt);
 		GenKeyKeyStoreCifraDecifra.setOnClickListener(this);
-		
+
 		Button GenerateRSAKey = (Button) this.findViewById(R.id.generatersakey);
 		GenerateRSAKey.setOnClickListener(this);
-		
-		Button AndroidKeyChain = (Button) this.findViewById(R.id.androidkeychain);
+
+		Button AndroidKeyChain = (Button) this
+				.findViewById(R.id.androidkeychain);
 		AndroidKeyChain.setOnClickListener(this);
-		
-		Button AndroidKeyStoreGenerateKey = (Button) this.findViewById(R.id.androidkeystoregeneratekey);
+
+		Button AndroidKeyStoreGenerateKey = (Button) this
+				.findViewById(R.id.androidkeystoregeneratekey);
 		AndroidKeyStoreGenerateKey.setOnClickListener(this);
-		
-		Button AndroidKeyStoreSign = (Button) this.findViewById(R.id.androidkeystoresign);
+
+		Button AndroidKeyStoreSign = (Button) this
+				.findViewById(R.id.androidkeystoresign);
 		AndroidKeyStoreSign.setOnClickListener(this);
-		
-		
+
 	}
 
 	@Override
@@ -58,46 +55,49 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	
-	public void startActivityGenKeyKeyStoreCifraDecifra(View v) {
-		Intent intent = new Intent(MainActivity.this,ActivityAndroidKeyStoreEncrypt.class);
+
+	public void startActivityAndroidKeyStoreEncrypt(View v) {
+		Intent intent = new Intent(MainActivity.this,
+				ActivityAndroidKeyStoreEncrypt.class);
 		startActivityForResult(intent, 1);
 	}
-	
+
 	public void startGenerateRSAKey(View v) {
-		Intent intent = new Intent(MainActivity.this,ActivityGenerateRSAKey.class);
+		Intent intent = new Intent(MainActivity.this,
+				ActivityGenerateRSAKey.class);
 		startActivityForResult(intent, 1);
 	}
-	
+
 	public void startAndroidKeyChain(View v) {
-		Intent intent = new Intent(MainActivity.this,ActivityAndroidKeyChain.class);
+		Intent intent = new Intent(MainActivity.this,
+				ActivityAndroidKeyChain.class);
 		startActivityForResult(intent, 1);
 	}
-	
+
 	public void startAndroidKeyStoreGenerateKey(View v) {
-		Intent intent = new Intent(MainActivity.this,ActivityAndroidKeyStoreGenerateKey.class);
+		Intent intent = new Intent(MainActivity.this,
+				ActivityAndroidKeyStoreGenerateKey.class);
 		startActivityForResult(intent, 1);
 	}
-	
+
 	public void startAndroidKeyStoreSign(View v) {
-		Intent intent = new Intent(MainActivity.this,ActivityAndroidKeyStoreSign.class);
+		Intent intent = new Intent(MainActivity.this,
+				ActivityAndroidKeyStoreSign.class);
 		startActivityForResult(intent, 1);
 	}
-	
-		
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.androidkeystoreencrypt:
-			startActivityGenKeyKeyStoreCifraDecifra(v);
+			startActivityAndroidKeyStoreEncrypt(v);
 			break;
 		case R.id.generatersakey:
 			startGenerateRSAKey(v);
@@ -114,10 +114,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		default:
 			break;
 		}
-		
-		
+
 	}
-	
-	
 
 }

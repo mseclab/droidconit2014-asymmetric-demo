@@ -10,8 +10,6 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.X509Certificate;
 
-import com.example.droidconit2014_asymmetric_demo_step_x1.R;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -30,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ActivityAndroidKeyChain extends Activity implements
@@ -46,8 +45,11 @@ public class ActivityAndroidKeyChain extends Activity implements
 	private EditText mInData;
 	private EditText mOutData;
 	private static TextView mDebugText;
+	private static ScrollView mScrollView;
 
 	private Object[] privpub = new Object[2];
+
+	private boolean flag = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class ActivityAndroidKeyChain extends Activity implements
 		mInData = (EditText) findViewById(R.id.inDataText);
 		mOutData = (EditText) findViewById(R.id.outDataText);
 		mDebugText = (TextView) findViewById(R.id.debugText);
+		mScrollView = (ScrollView) findViewById(R.id.scrollView);
 
 	}
 
@@ -92,7 +95,7 @@ public class ActivityAndroidKeyChain extends Activity implements
 
 		switch (view.getId()) {
 		case R.id.import_button:
-			debug("Import .p12");
+			debug("Click on import");
 			Intent intent = KeyChain.createInstallIntent();
 			byte[] p12 = null;
 			try {
@@ -102,17 +105,20 @@ public class ActivityAndroidKeyChain extends Activity implements
 			}
 			intent.putExtra(KeyChain.EXTRA_PKCS12, p12);
 			startActivity(intent);
+			flag = true;
 			break;
 
 		case R.id.useprivatekey_button:
-			debug("Cliccato Usa Chiave Privata");
-
-			KeyChain.choosePrivateKeyAlias(this, this, new String[] { "RSA" },
-					null, null, -1, null);
+			debug("Click on use key");
+			if (flag == true)
+				KeyChain.choosePrivateKeyAlias(this, this,
+						new String[] { "RSA" }, null, null, -1, null);
+			else
+				debug("Import p12 file before");
 			break;
 
 		case R.id.exit_button:
-			debug("Cliccato Exit");
+			debug("Click on exit");
 			finish();
 			break;
 
@@ -131,9 +137,13 @@ public class ActivityAndroidKeyChain extends Activity implements
 
 	@SuppressLint("NewApi")
 	private void debug(String message) {
-		String old  = mDebugText.getText().toString();
-		mDebugText.setText(message + "\n" + old);
+		mDebugText.append(message + "\n");
 		Log.v(TAG, message);
+		mScrollView.post(new Runnable() {
+			public void run() {
+				mScrollView.fullScroll(View.FOCUS_DOWN);
+			}
+		});
 	}
 
 	private void clearText() {
@@ -142,7 +152,6 @@ public class ActivityAndroidKeyChain extends Activity implements
 
 	public void use_key() {
 		boolean valid = false;
-
 		PrivateKey private_key = null;
 		PublicKey public_key = null;
 		X509Certificate certificate = null;

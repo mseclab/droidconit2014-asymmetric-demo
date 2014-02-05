@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 import javax.security.auth.x500.X500Principal;
 
-import com.example.droidconit2014_asymmetric_demo_step_x1.R;
+
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +89,7 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 		private Button mFirmaButton;
 		private Button mVerificaButton;
 		private TextView mDebugText;
+		private ScrollView mScrollView;
 		private EditText mInData;
 		private EditText mOutData;
 		private Button exit_Button;
@@ -123,6 +125,7 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 			mOutData = (EditText) rootView.findViewById(R.id.outDataText);
 			mDebugText = (TextView) rootView.findViewById(R.id.debugText);
 
+			mScrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
 			return rootView;
 		}
 
@@ -238,6 +241,8 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 			try {
 				keyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS,
 						null);
+				if(keyEntry==null)
+					return;
 				RSAPrivateKey privKey = (RSAPrivateKey) keyEntry
 						.getPrivateKey();
 
@@ -289,6 +294,8 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 			try {
 				keyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS,
 						null);
+				if(keyEntry==null)
+					return;
 				Certificate cert = keyEntry.getCertificate();
 
 				// Verifica firma
@@ -338,9 +345,15 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 		}
 
 		private void debug(String message) {
-			String old = mDebugText.getText().toString();
-			mDebugText.setText(message + "\n" + old);
+			mDebugText.append(message + "\n");
 			Log.v(TAG, message);
+			mScrollView.post(new Runnable()
+		    {
+		        public void run()
+		        {
+		        	mScrollView.fullScroll(View.FOCUS_DOWN);
+		        }
+		    });
 		}
 
 	}

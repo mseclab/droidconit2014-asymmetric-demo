@@ -25,7 +25,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.security.auth.x500.X500Principal;
 
-import com.example.droidconit2014_asymmetric_demo_step_x1.R;
+
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -44,6 +44,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ActivityAndroidKeyStoreEncrypt extends Activity  {
@@ -95,12 +96,14 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 		private TextView mDebugText;
 		private EditText mInData;
 		private EditText mOutData;
+		private ScrollView mScrollView;
 
 		ProgressDialog progressdialog;
 
 		private static final String SIGN_ALG = "SHA256withRSA";
 		private static final String TAG = "AndroidKeyStoreDemo";
-
+		private boolean flag = false;
+		
 		public PlaceholderFragment() {
 		}
 
@@ -126,7 +129,7 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 			mInData = (EditText) rootView.findViewById(R.id.inDataText);
 			mOutData = (EditText) rootView.findViewById(R.id.outDataText);
 			mDebugText = (TextView) rootView.findViewById(R.id.debugText);
-
+			mScrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
 			return rootView;
 		}
 
@@ -135,19 +138,19 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 
 			switch (view.getId()) {
 			case R.id.exit_button:
-				debug("Cliccato Chiudi");
+				debug("Click on exit");
 				this.getActivity().finish();
 				break;
 			case R.id.generate_button:
-				debug("Cliccato Genera chiavi");
+				debug("Click on gen keys");
 				generaChiavi();
 				break;
 			case R.id.cifra_button:
-				debug("Cliccato Cifra");
+				debug("Click on encrypt");
 				cifraData();
 				break;
 			case R.id.decifra_button:
-				debug("Cliccato Decifra");
+				debug("Click on decrypt");
 				decifraData();
 				break;
 
@@ -173,8 +176,11 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 					return;
 				
 				entry = (KeyStore.PrivateKeyEntry) dammiElementoDalKeystore();
-				if (entry == null)
+				if (entry == null){
+					debug("Key not found");
 					return;
+				}
+					
 				PublicKey publicKeyEnc = ((KeyStore.PrivateKeyEntry) entry)
 						.getCertificate().getPublicKey();
 				
@@ -222,11 +228,16 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 			} catch (NoSuchPaddingException e) {
 				debug(e.toString());
 			}
-
+			flag = true;
 		}
 
 		private void decifraData() {
 			
+			if(flag==false){
+				debug("Encrypt before");
+				return;
+			}
+				
 			// TODO Auto-generated method stub
 			KeyStore.PrivateKeyEntry entry = null;
 
@@ -247,8 +258,10 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 				if (keyStore == null)
 					return;
 				entry = (KeyStore.PrivateKeyEntry) dammiElementoDalKeystore();
-				if (entry == null)
+				if (entry == null){
+					debug("Key not found");
 					return;
+				}
 				Cipher decCipher = null;
 				byte[] plainTextByte = null;
 				decCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -294,13 +307,6 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 					android.security.KeyPairGeneratorSpec.Builder builder = new KeyPairGeneratorSpec.Builder(
 							cx);
 					builder.setAlias(ALIAS);
-					/*try {
-						builder.setKeyType("EC");
-					} catch (NoSuchAlgorithmException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}*/
-					builder.setKeySize(2048);
 					String infocert = String.format("CN=%s, OU=%s", ALIAS,
 							cx.getPackageName());
 					builder.setSubject(new X500Principal(infocert));
@@ -396,9 +402,15 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 		}
 
 		private void debug(String message) {
-			String old  = mDebugText.getText().toString();
-			mDebugText.setText(message + "\n" + old);
+			mDebugText.append(message + "\n");
 			Log.v(TAG, message);
+			mScrollView.post(new Runnable()
+		    {
+		        public void run()
+		        {
+		        	mScrollView.fullScroll(View.FOCUS_DOWN);
+		        }
+		    });
 		}
 	}
 

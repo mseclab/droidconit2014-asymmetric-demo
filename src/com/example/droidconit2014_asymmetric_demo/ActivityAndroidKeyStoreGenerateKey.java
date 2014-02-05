@@ -17,7 +17,7 @@ import java.util.Calendar;
 
 import javax.security.auth.x500.X500Principal;
 
-import com.example.droidconit2014_asymmetric_demo_step_x1.R;
+
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ActivityAndroidKeyStoreGenerateKey extends Activity{
@@ -80,6 +81,7 @@ public class ActivityAndroidKeyStoreGenerateKey extends Activity{
 		private TextView mDebugText;
 		private Button exit_Button;
 		private Button mAccChiaviButton;
+		private ScrollView mScrollView;
 		ProgressDialog progressdialog;
 
 		private static final String TAG = "AndroidKeyStoreDemo";
@@ -102,7 +104,7 @@ public class ActivityAndroidKeyStoreGenerateKey extends Activity{
 					.findViewById(R.id.access_button);
 			mAccChiaviButton.setOnClickListener(this);
 			mDebugText = (TextView) rootView.findViewById(R.id.debugText);
-
+			mScrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
 			return rootView;
 		}
 
@@ -257,9 +259,15 @@ public class ActivityAndroidKeyStoreGenerateKey extends Activity{
 		}
 
 		private void debug(String message) {
-			String old  = mDebugText.getText().toString();
-			mDebugText.setText(message + "\n" + old);
+			mDebugText.append(message + "\n");
 			Log.v(TAG, message);
+			mScrollView.post(new Runnable()
+		    {
+		        public void run()
+		        {
+		        	mScrollView.fullScroll(View.FOCUS_DOWN);
+		        }
+		    });
 		}
 	}
 
