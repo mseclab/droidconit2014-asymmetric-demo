@@ -228,7 +228,7 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 		private void firmaData() {
 			
 			String data = mInData.getText().toString();
-			debug("Stringa da firmare:" + data);
+			debug("Text to sign:" + data);
 			byte[] rawData = data.getBytes();
 
 			// Accesso alla chiave
