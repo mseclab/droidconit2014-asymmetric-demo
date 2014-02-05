@@ -245,7 +245,7 @@ public class ActivityGenerateRSAKey extends Activity {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+			debug("Provider Utilizzato -> " +cipher.getProvider());
 			String plainText = mInData.getText().toString();
 			try {
 				cipheredData = cipher.doFinal(plainText.getBytes());

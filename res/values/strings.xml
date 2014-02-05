@@ -20,7 +20,7 @@
     <string name="in_data">Input:</string>
     <string name="out_data">Output:</string>
     <string name="accedi_chiavi">Visualizza chiavi</string>
-    <string name="genkeykeystorecifradecifra">GenKeyKeystoreCifraDecifra</string>
+    <string name="androidkeystoreencrypt">AndroidKeyStore Enc/Dec</string>
     <string name="generatersakey">Generate RSA Key</string>
     <string name="androidkeychain">Android KeyChain</string>
     <string name="androidkeystoregeneratekey">AndroidKeyStore Gen Key</string>

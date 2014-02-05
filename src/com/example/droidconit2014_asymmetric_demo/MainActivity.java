@@ -21,7 +21,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		Button GenKeyKeyStoreCifraDecifra = (Button) this.findViewById(R.id.genkeykeystorecifradecifra);
+		Button GenKeyKeyStoreCifraDecifra = (Button) this.findViewById(R.id.androidkeystoreencrypt);
 		GenKeyKeyStoreCifraDecifra.setOnClickListener(this);
 		
 		Button GenerateRSAKey = (Button) this.findViewById(R.id.generatersakey);
@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	
 	
 	public void startActivityGenKeyKeyStoreCifraDecifra(View v) {
-		Intent intent = new Intent(MainActivity.this,ActivityGenKeyKeyStoreCifraDecifra.class);
+		Intent intent = new Intent(MainActivity.this,ActivityAndroidKeyStoreEncrypt.class);
 		startActivityForResult(intent, 1);
 	}
 	
@@ -96,7 +96,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.genkeykeystorecifradecifra:
+		case R.id.androidkeystoreencrypt:
 			startActivityGenKeyKeyStoreCifraDecifra(v);
 			break;
 		case R.id.generatersakey:

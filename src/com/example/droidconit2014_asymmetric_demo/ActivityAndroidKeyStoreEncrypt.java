@@ -46,7 +46,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class ActivityGenKeyKeyStoreCifraDecifra extends Activity  {
+public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 
 	private final static String ALIAS = "DEVKEY1";
 

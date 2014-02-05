@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.droidconit2014_asymmetric_demo.ActivityGenKeyKeyStoreCifraDecifra"
+            android:name="com.example.droidconit2014_asymmetric_demo.ActivityAndroidKeyStoreEncrypt"
             android:label="@string/app_name_GenKeyKeyStoreCifraDecifra" >
         </activity>
         <activity

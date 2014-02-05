@@ -25,11 +25,11 @@
         android:text="@string/androidkeystoresign" />
 
     <Button
-        android:id="@+id/genkeykeystorecifradecifra"
+        android:id="@+id/androidkeystoreencrypt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:text="@string/genkeykeystorecifradecifra" />
+        android:text="@string/androidkeystoreencrypt" />
 
     <Button
         android:id="@+id/androidkeychain"
