@@ -134,19 +134,19 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 
 			switch (view.getId()) {
 			case R.id.exit_button:
-				debug("Cliccato Chiudi");
+				debug("Click on exit");
 				this.getActivity().finish();
 				break;
 			case R.id.generate_button:
-				debug("Cliccato Genera chiavi");
+				debug("Click on gen key");
 				generaChiavi();
 				break;
 			case R.id.firma_button:
-				debug("Cliccato Firma");
+				debug("Click on sign");
 				firmaData();
 				break;
 			case R.id.verifica_button:
-				debug("Cliccato Verifica");
+				debug("Click on verify");
 				verificaData();
 				break;
 
@@ -187,12 +187,12 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 						publishProgress("Generated key pair : " + kp.toString());
 						PublicKey publickey = kp.getPublic();
 						PrivateKey privateKey = kp.getPrivate();
-						publishProgress("Formato della chiave pubblica : "
+						publishProgress("Public key format : "
 								+ publickey.getFormat());
-						publishProgress("Algoritmo utilizzato : "
+						publishProgress("Used algorithm : "
 								+ publickey.getAlgorithm());
 						if (privateKey.getEncoded() == null)
-							publishProgress("Non possibile accedere direttamente alla chiave privata :-(");
+							publishProgress("Is not possible directly to access to private key :-(");
 
 					} catch (NoSuchAlgorithmException e) {
 						debug(e.toString());
@@ -268,7 +268,7 @@ public class ActivityAndroidKeyStoreSign extends Activity {
 				String signData = Base64.encodeToString(signature,
 						Base64.DEFAULT);
 				mOutData.setText(signData);
-				debug("Firma Calcolata:\n" + signData);
+				debug("Signature:\n" + signData);
 			}
 
 		}

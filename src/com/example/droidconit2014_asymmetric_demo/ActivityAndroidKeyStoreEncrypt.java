@@ -164,13 +164,12 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 			
 			// TODO Auto-generated method stub
 			String data = mInData.getText().toString();
-			debug("Stringa da cifrare:" + data);
+			debug("String to encrypt:" + data);
 			byte[] rawData = data.getBytes();
 
 			KeyStore.PrivateKeyEntry entry = null;
 
 			try {
-				// Accesso alla chiave
 				keyStore = initKeyStore();
 				if (keyStore == null)
 					return;
@@ -184,7 +183,6 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 				PublicKey publicKeyEnc = ((KeyStore.PrivateKeyEntry) entry)
 						.getCertificate().getPublicKey();
 				
-				// Manipola le chiavi passando da una rappresentazione all'altra
 				KeyFactory factory = null;
 				try {
 					factory = KeyFactory.getInstance("RSA");
@@ -201,19 +199,18 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 					e.printStackTrace();
 				}
 				
-				debug("lunghezza chiave " + Integer.toString(rsa_public_key.getModulus().bitLength()));
-				//////////
+				debug("Key size " + Integer.toString(rsa_public_key.getModulus().bitLength()));
+				
 				Cipher encCipher = null;
 				byte[] ecryptedText = null;
 				encCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-				//encCipher = Cipher.getInstance("EC");
 				encCipher.init(Cipher.ENCRYPT_MODE, publicKeyEnc);
 				ecryptedText = encCipher.doFinal(rawData);
-				debug("Testo cifrato : " + ecryptedText.toString());
+				debug("Text encrypted : " + ecryptedText.toString());
 				String encryptedDataBase64 = Base64.encodeToString(
 						ecryptedText, Base64.DEFAULT);
 				mOutData.setText(encryptedDataBase64);
-				debug("Testo cifrato Base64 : " + encryptedDataBase64);
+				debug("Base64 text encrypted: " + encryptedDataBase64);
 
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
@@ -249,11 +246,10 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 				encrypted = Base64.decode(stringEncrypted, Base64.DEFAULT);
 
 			} catch (IllegalArgumentException e) {
-				debug("String Base64 non valida");
+				debug("String Base64 is not valid");
 				return;
 			}
 			try {
-				// Accesso alla chiave
 				keyStore = initKeyStore();
 				if (keyStore == null)
 					return;
@@ -270,10 +266,10 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 				plainTextByte = decCipher.doFinal(encrypted);
 				String plainText = new String(plainTextByte);
 				if (plainText.equalsIgnoreCase(new String(data))){
-					debug("Testo decifrato: " + plainText);
+					debug("Text decrypted: " + plainText);
 					mOutData.setText(plainText);
 				}else
-					debug("Errore nella decifratura");
+					debug("Error in decryption");
 
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
@@ -326,12 +322,12 @@ public class ActivityAndroidKeyStoreEncrypt extends Activity  {
 						publishProgress("Generated key pair : " + kp.toString());
 						PublicKey publickey = kp.getPublic();
 						PrivateKey privateKey = kp.getPrivate();
-						publishProgress("Formato della chiave pubblica : "
+						publishProgress("Public key format : "
 								+ publickey.getFormat());
-						publishProgress("Algoritmo utilizzato : "
+						publishProgress("Used algorithm : "
 								+ publickey.getAlgorithm());
 						if (privateKey.getEncoded() == null)
-							publishProgress("Non possibile accedere direttamente alla chiave privata :-(");
+							publishProgress("Is not possible directly access to private key :-(");
 
 					} catch (NoSuchAlgorithmException e) {
 						debug(e.toString());

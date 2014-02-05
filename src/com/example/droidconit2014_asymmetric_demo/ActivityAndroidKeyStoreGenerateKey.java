@@ -113,15 +113,15 @@ public class ActivityAndroidKeyStoreGenerateKey extends Activity{
 
 			switch (view.getId()) {
 			case R.id.generate_button:
-				debug("Cliccato Genera chiavi");
+				debug("Click on Gen Key");
 				generaChiavi();
 				break;
 			case R.id.access_button:
-				debug("Accedi alle chiavi");
+				debug("Click on key access");
 				accediChiavi();
 				break;
 			case R.id.exit_button:
-				debug("Cliccato Chiudi");
+				debug("Click on exit");
 				this.getActivity().finish();
 				break;
 			}
@@ -138,7 +138,7 @@ public class ActivityAndroidKeyStoreGenerateKey extends Activity{
 				debug("Keys not found");
 				return;
 			}
-			debug("Certtificate Type: "
+			debug("Certificate Type: "
 					+ ((KeyStore.PrivateKeyEntry) entry).getCertificate()
 							.getType());
 			debug(entry.toString());
@@ -220,12 +220,12 @@ public class ActivityAndroidKeyStoreGenerateKey extends Activity{
 						publishProgress("Generated key pair : " + kp.toString());
 						PublicKey publickey = kp.getPublic();
 						PrivateKey privateKey = kp.getPrivate();
-						publishProgress("Formato della chiave pubblica : "
+						publishProgress("Public key format : "
 								+ publickey.getFormat());
-						publishProgress("Algoritmo utilizzato : "
+						publishProgress("Used algorithm : "
 								+ publickey.getAlgorithm());
 						if (privateKey.getEncoded() == null)
-							publishProgress("Non possibile accedere direttamente alla chiave privata :-(");
+							publishProgress("Is not possible directly to access to private key :-(");
 
 					} catch (NoSuchAlgorithmException e) {
 						debug(e.toString());
